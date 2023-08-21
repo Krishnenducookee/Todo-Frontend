@@ -10,8 +10,8 @@ import Toast from './Toast'
 const Addpage = () => {
   const [inputData, setinputData] = useState({taskName:" ",dueDate:" ",isPersonal:" "})
   const [invalidData,setInvalidData]=useState({})
-const [isSubmit, setisSubmit] = useState('')
-  const toast=useRef(false)
+const [isSubmit, setisSubmit] = useState(false)
+  const toast=useRef('')
   const navigate=useNavigate()
 
   
