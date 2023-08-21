@@ -13,7 +13,7 @@ const Toast = ({toast}) => {
     <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-black rounded-lg dark:bg-green-800 dark:text-green-200">
     </div>
     <div className="ml-3 text-sm font-normal">
-      {toast?<h1 className='text-green-500'>Task Saved Successfully</h1>:<h1 className='text-red-500'>Something Went wrong</h1>}</div>
+      {toast==='success'?<h1 className='text-green-500'>Task Saved Successfully</h1>:<h1 className='text-red-500'>Something Went wrong</h1>}</div>
   </div>
   
   </>
