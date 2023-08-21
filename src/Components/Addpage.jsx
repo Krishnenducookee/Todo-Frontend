@@ -10,7 +10,7 @@ import Toast from './Toast'
 const Addpage = () => {
   const [inputData, setinputData] = useState({taskName:" ",dueDate:" ",isPersonal:" "})
   const [invalidData,setInvalidData]=useState({})
-const [isSubmit, setisSubmit] = useState(false)
+const [isSubmit, setisSubmit] = useState('')
   const toast=useRef(false)
   const navigate=useNavigate()
 
@@ -43,22 +43,25 @@ const [isSubmit, setisSubmit] = useState(false)
      setisSubmit(true)  
      if(Object.keys(invalidData).length===0 && isSubmit){ 
          
-      axios.post('http://localhost:2000/router/addTask',inputData).then((response)=>{ 
-        toast.current=true
+      axios.post('http://localhost:2000/router/addTask',inputData).then((response)=>{         
+      (()=>{toast.current='success'})()      
         setTimeout(() => {
           navigate('/viewtask')
         }, 2000);      
       }).catch((error)=>{
-        toast.current=false
+        toast.current='error'
+        setTimeout(() => {
+          navigate('/')
+        }, 2000);
       })}
           
 
   }
   return (
     <div className='bg-green-300 h-screen'>
-       {(() => {
-        if (toast.current) {
-          return <Toast toast={toast} />
+      {(() => {
+        if (toast.current === 'success' || toast.current==='error') {
+          return <Toast toast={toast.current} />
         }
       })()}
       <div className='pt-16 pl-96'>
