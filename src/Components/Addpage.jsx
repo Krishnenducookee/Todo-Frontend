@@ -56,7 +56,11 @@ const [isSubmit, setisSubmit] = useState(false)
   }
   return (
     <div className='bg-green-300 h-screen'>
-       {toast?<Toast toast={toast}/>:null}
+       {(() => {
+        if (toast.current) {
+          return <Toast toast={toast} />
+        }
+      })()}
       <div className='pt-16 pl-96'>
       
       <form className="w-full max-w-lg" onSubmit={saveData}>
