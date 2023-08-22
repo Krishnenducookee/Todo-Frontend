@@ -1,5 +1,5 @@
 import axios from 'axios'
-import  {useRef, useState } from 'react'
+import  { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Toast from './Toast'
 
@@ -11,7 +11,8 @@ const Addpage = () => {
   const [inputData, setinputData] = useState({taskName:" ",dueDate:" ",isPersonal:" "})
   const [invalidData,setInvalidData]=useState({})
 const [isSubmit, setisSubmit] = useState(false)
-  const toast=useRef('')
+  const [toast, settoast] = useState({isActive:false 
+  ,toastmessege:false})
   const navigate=useNavigate()
 
   
@@ -37,33 +38,30 @@ const [isSubmit, setisSubmit] = useState(false)
     }
    return error;
   }
-  const saveData=(e)=>{
+  const saveData= async(e)=>{
     e.preventDefault();
      setInvalidData(validation(inputData))
      setisSubmit(true)  
-     if(Object.keys(invalidData).length===0 && isSubmit){ 
-         
-      axios.post('http://localhost:2000/router/addTask',inputData).then((response)=>{         
-      (()=>{toast.current='success'})()      
-        setTimeout(() => {
+     if(Object.keys(invalidData).length===0 && isSubmit){     
+      const response= await axios.post('http://localhost:2000/router/addTask',inputData)  
+     settoast({isActive:true,toastmessege:response.status===200})
+      setTimeout(() => {
           navigate('/viewtask')
         }, 2000);      
-      }).catch((error)=>{
-        toast.current='error'
-        setTimeout(() => {
-          navigate('/')
-        }, 2000);
-      })}
-          
+     
+        
+      }
+         
 
   }
   return (
     <div className='bg-green-300 h-screen'>
-      {(() => {
+      {/* {(() => {
         if (toast.current === 'success' || toast.current==='error') {
           return <Toast toast={toast.current} />
         }
-      })()}
+      })()} */}
+      {toast.isActive?<Toast toast={toast.toastmessege}/>:null}
       <div className='pt-16 pl-96'>
       
       <form className="w-full max-w-lg" onSubmit={saveData}>
