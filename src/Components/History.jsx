@@ -1,15 +1,19 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
+
 import { Link } from "react-router-dom"
+import useFetch from "../Hooks/useFetch"
+import { useState } from "react"
+
 
 
 const History = () => {
-   const [doneTask, setDoneTask] = useState([])
-  useEffect(()=>{
-       axios.get('http://localhost:2000/router/viewCompletedTask').then((response)=>{
-        setDoneTask(response.data.data);
-       })
-  },[])
+  const [upcomingTasks, setUpcomingTasks] = useState([])
+
+
+  useFetch({url:'viewCompletedTask',method:'get',handleResponse:(response)=>{
+    setUpcomingTasks(response)
+}})
+
+
  const theadarray=["Sl.No","Task","Workspace","Due Date","Description" ,"Issued From",]
 
   return (
@@ -26,7 +30,7 @@ const History = () => {
       </tr>
     </thead>
     <tbody>
-      {doneTask?.map((data,index)=>{
+      {upcomingTasks?.map((data,index)=>{
       const mapdata=[index+1,data.taskName,data.isPersonal,data.dueDate,data.taskDescription,data.createdAt]
       return (<tr>
         {mapdata.map((data2,index)=>(
