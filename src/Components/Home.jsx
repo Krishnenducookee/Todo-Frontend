@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import useFetch from '../Hooks/useFetch'
 
 const Home = () => {
   // const [donetask, isDone] = useState({id:true})
-  const [pendingTask, setpendingTask] = useState([])
-  useEffect(()=>{
-       axios.get('http://localhost:2000/router/viewalltask').then((response)=>{
-        setpendingTask(response.data.data);
+  // useEffect(()=>{
+  //      axios.get('http://localhost:2000/router/viewalltask').then((response)=>{
+  //       setpendingTask(response.data.data);
         
-       })
-  },[])
+  //      })
+  // },[])
+  const [pendingTask, setpendingTask] = useState([])
+
+ useFetch({url:'viewallTask',method:'get',handleResponse:(response)=>{
+    setpendingTask(response)
+}})
+
+
 
   const done=(id)=>{
       setpendingTask(pendingTask.filter((t)=>t._id!==id))
-      axios.post(`http://localhost:2000/router/done/${id}`).then((response)=>{
-        console.log("ok");
+      axios.post(`http://localhost:2000/router/done/${id}`).then(()=>{
       })
   }
   return (
