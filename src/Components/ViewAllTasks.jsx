@@ -1,19 +1,18 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import useFetch from "../Hooks/useFetch"
+ import { useState } from "react"
 
 
 const ViewAllTasks = () => {
-  const [upcomingTasks, setUpcomingTasks] = useState([])
    const navigate=useNavigate()
+   const [upcomingTasks, setUpcomingTasks] = useState([])
 
-  useEffect(()=>{
-       axios.get('http://localhost:2000/router/viewallTask').then((response)=>{
-        setUpcomingTasks(response.data.data);
-
-       })
-  },[])
-
+   useFetch({ url: 'viewallTask',method:'get',handleResponse:(response)=>{
+           setUpcomingTasks(response)
+   }  })
+    
+   
   const edit=(id)=>{
     navigate(`/editTask/${id}`)
 
@@ -21,12 +20,12 @@ const ViewAllTasks = () => {
  const theadarray=["Sl.No","Task","Workspace","Due Date","Description","Issued From","Action"]
 
   const done=(id)=>{
-    setUpcomingTasks(upcomingTasks.filter((t)=>t._id!==id))
-    axios.post(`http://localhost:2000/router/done/${id}`).then((response)=>{
-      
+      debugger;
+      setUpcomingTasks(upcomingTasks.filter((t)=>t._id!==id))
+    axios.post(`http://localhost:2000/router/done/${id}`).then(()=>{
     })
 }
-  return (
+  return ( 
     <div className='bg-green-300 h-screen'>
         <div className=' mx-96'>
     <table className='border boredr-slate-200 border-separate border-spacing-2'>
