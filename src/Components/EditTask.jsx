@@ -1,5 +1,4 @@
-import axios from "axios"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import useFetch from "../Hooks/useFetch"
 import { MakeApiCall } from "../Hooks/MakeApiCall"
@@ -18,10 +17,12 @@ const EditTask = () => {
   //              setinputData(response.data.data)
   //           })
   // },[])
+  
   useFetch({ url: `editTaskOld/${id}`,
   method:'get',
   handleResponse:(response)=>{
    setinputData(response)
+   
 }  })
 
   
@@ -98,7 +99,6 @@ else{
         name='dueDate'
         value={inputData.dueDate}
         onChange={collectData}
-        placeholder="Date"
         id='txtDate'
         
       />
