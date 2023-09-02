@@ -16,7 +16,7 @@ const useFetch=({
    }) 
     
     
-     },[url,method,handleResponse,fetchedData,])
+     },[])
   
 }
 export default useFetch;
