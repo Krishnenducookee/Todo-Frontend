@@ -1,6 +1,8 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
+import useFetch from "../Hooks/useFetch"
+import { MakeApiCall } from "../Hooks/MakeApiCall"
 
 
 
@@ -8,15 +10,20 @@ const EditTask = () => {
   const {id}=useParams()
     const [inputData, setinputData] = useState({taskName:"",dueDate:"",isPersonal:""})
   const [invalidData,setInvalidData]=useState({})
-  // const [oldData, setoldData] = useState([])
+
   const navigate=useNavigate()
-console.log(inputData);
-  useEffect(()=>{
-            axios.get(`http://localhost:2000/router/editTaskOld/${id}`).then((response)=>{
-               setinputData(response.data.data)
-            })
-  },[])
-  
+
+  // useEffect(()=>{
+  //           axios.get(`http://localhost:2000/router/editTaskOld/${id}`).then((response)=>{
+  //              setinputData(response.data.data)
+  //           })
+  // },[])
+  useFetch({ url: `editTaskOld/${id}`,
+  method:'get',
+  handleResponse:(response)=>{
+   setinputData(response)
+}  })
+
   
   const collectData=(e)=>{
      const {name,value}=e.target
@@ -43,7 +50,8 @@ console.log(inputData);
     e.preventDefault();
      setInvalidData(validation(inputData))
      if(invalidData){
-      axios.post('http://localhost:2000/router/editTask',inputData).then((response)=>{
+       MakeApiCall({url:'editTask',method:'post',requestBody:inputData}).then(()=>{
+      // axios.post('http://localhost:2000/router/editTask',inputData).then((response)=>{
         navigate('/viewtask')
       })
      }
@@ -130,7 +138,6 @@ else{
           name='isPersonal'
           value={inputData.isPersonal}
         >
-           <option defaultChecked>Workspace</option>
           <option value="personal">Personal</option>
           <option value="official">Official</option>
         </select>
