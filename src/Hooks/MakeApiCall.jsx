@@ -3,14 +3,12 @@ import axios from "axios"
 
 
 
-export async function MakeApiCall({url,method}){
+export async function MakeApiCall({url,method,requestBody}){
     try {
 
-   const response=await axios[method](`http://localhost:2000/router/${url}`)
-        
-    return response
-
-        
+  return await axios[method](`http://localhost:2000/router/${url}`,requestBody)
+    
+    
     } catch (error) {
         
     }
