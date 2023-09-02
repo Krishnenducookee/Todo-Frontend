@@ -1,7 +1,7 @@
-import axios from 'axios'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Toast from './Toast'
+import { MakeApiCall } from '../Hooks/MakeApiCall'
 
 
 
@@ -16,8 +16,6 @@ const Addpage = () => {
     , toastmessege: false
   })
   const navigate = useNavigate()
-
-
 
   const collectData = (e) => {
     const { name, value } = e.target
@@ -45,37 +43,34 @@ const Addpage = () => {
     setInvalidData(validation(inputData))
     setisSubmit(true)
     if (Object.keys(invalidData).length === 0 && isSubmit) {
-      try {
-        const response = await axios.post('http://localhost:2000/router/addTask', inputData)
-        settoast({ isActive: true, toastmessege: response.status === 200 })
-
-        setTimeout(() => {
-          navigate('/viewtask')
-        }, 2000);
-
-      } catch (error) {
-        settoast({ isActive: true, toastmessege:false })
-        setTimeout(() => {
-          navigate('/')
-        }, 2000);
-      }
+      
+      MakeApiCall({url:'addTask',method:'post',requestBody:inputData}).then((response)=>{
+        settoast({ isActive: true, toastmessege: response.status===200 })
+            setTimeout(() => {
+              navigate('/viewtask')
+            }, 2000);
+    
+            
+            } ).catch ((error)=>{
+            settoast({ isActive: true, toastmessege:false })
+            setTimeout(() => {
+              navigate('/')
+            }, 2000);
+            
+      })}
 
       // settoast((preResponse)=>{
       //   if(!preResponse.toastmessege){preResponse.isActive=true}})
       //   settoast({isActive:true,toastmessege:response.status===200})
       //response.status===200?settoast({isActive:true,toastmessege:true}):settoast({isActive:true,toastmessege:false}) 
 
-    }
+
 
 
   }
   return (
     <div className='bg-green-300 h-screen'>
-      {/* {(() => {
-        if (toast.current === 'success' || toast.current==='error') {
-          return <Toast toast={toast.current} />
-        }
-      })()} */}
+
       {toast.isActive ? <Toast toast={toast.toastmessege} /> : null}
       <div className='pt-16 pl-96'>
 
