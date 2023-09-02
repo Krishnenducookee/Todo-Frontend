@@ -1,15 +1,17 @@
-import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 import useFetch from "../Hooks/useFetch"
  import { useState } from "react"
+import { MakeApiCall } from "../Hooks/MakeApiCall"
 
 
 const ViewAllTasks = () => {
    const navigate=useNavigate()
    const [upcomingTasks, setUpcomingTasks] = useState([])
 
-   useFetch({ url: 'viewallTask',method:'get',handleResponse:(response)=>{
-           setUpcomingTasks(response)
+   useFetch({ url: 'viewallTask',
+              method:'get',
+              handleResponse:(response)=>{
+               setUpcomingTasks(response)
    }  })
     
    
@@ -20,10 +22,9 @@ const ViewAllTasks = () => {
  const theadarray=["Sl.No","Task","Workspace","Due Date","Description","Issued From","Action"]
 
   const done=(id)=>{
-      debugger;
       setUpcomingTasks(upcomingTasks.filter((t)=>t._id!==id))
-    axios.post(`http://localhost:2000/router/done/${id}`).then(()=>{
-    })
+      MakeApiCall({url:`done/${id}`,method:'post'})
+    // axios.post(`http://localhost:2000/router/done/${id}`)
 }
   return ( 
     <div className='bg-green-300 h-screen'>
