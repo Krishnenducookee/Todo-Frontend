@@ -12,7 +12,7 @@ const useFetch=({
    MakeApiCall({url,method}).then((response)=>{
         
         setFetchedData(response.data.data )
-        handleResponse(fetchedData)
+         handleResponse(response.data.data)
    }) 
     
     
