@@ -1,28 +1,23 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import useFetch from '../Hooks/useFetch'
+import { MakeApiCall } from '../Hooks/MakeApiCall'
 
 const Home = () => {
-  // const [donetask, isDone] = useState({id:true})
-  // useEffect(()=>{
-  //      axios.get('http://localhost:2000/router/viewalltask').then((response)=>{
-  //       setpendingTask(response.data.data);
-        
-  //      })
-  // },[])
+ 
   const [pendingTask, setpendingTask] = useState([])
 
  useFetch({url:'viewallTask',method:'get',handleResponse:(response)=>{
     setpendingTask(response)
+  
 }})
 
 
 
   const done=(id)=>{
       setpendingTask(pendingTask.filter((t)=>t._id!==id))
-      axios.post(`http://localhost:2000/router/done/${id}`).then(()=>{
-      })
+      MakeApiCall({url:`done/${id}`,method:'post'})
+      // axios.post(`http://localhost:2000/router/done/${id}`)
   }
   return (
     <div className='bg-green-300 h-screen' >
