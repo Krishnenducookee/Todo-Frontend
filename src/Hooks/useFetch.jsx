@@ -1,23 +1,30 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import { MakeApiCall } from "./MakeApiCall";
 
 const useFetch=({
-    url,method,handleResponse
+    url,method,handleResponse,istyping
 })=>{
     const [fetchedData,setFetchedData]=useState([])
-
-    useEffect(()=>{
+ 
+    useEffect(()=>{      
+        if(!istyping)
    MakeApiCall({url,method}).then((response)=>{
-    debugger;
-    setFetchedData(response.data.data)
-    handleResponse(fetchedData)})
-   
         
-     
-            
-        
-    },[url,method,handleResponse])
+        setFetchedData(response.data.data )
+        handleResponse(fetchedData)
+   }) 
+    
+    
+     },[url,method,handleResponse,fetchedData,])
   
 }
 export default useFetch;
+
+
+
+
+
+
+
+
