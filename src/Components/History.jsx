@@ -1,24 +1,24 @@
 
 import { Link } from "react-router-dom"
 import useFetch from "../Hooks/useFetch"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 
 
 const History = () => {
   const [upcomingTasks, setUpcomingTasks] = useState([])
-
-
+  const scrollRef=useRef()
+   
   useFetch({url:'viewCompletedTask',method:'get',handleResponse:(response)=>{
     setUpcomingTasks(response)
 }})
-
-
+ 
  const theadarray=["Sl.No","Task","Workspace","Due Date","Description" ,"Issued From",]
 
   return (
     <div className='bg-green-300 h-screen'>
       <div className="mx-96">
+        <button onClick={()=>{scrollRef.current.scrollIntoView({block:'end'})}}>top</button> 
       <table className='border boredr-slate-200 border-separate border-spacing-2'>
     <thead>
       <tr>
@@ -38,9 +38,9 @@ const History = () => {
     ))}
         </tr>)
       })}</tbody></table></div>  <div>
-    <button className=' mt-8 mx-96 px-4 py-1 border font-semibold rounded-full text-sm bg-green-500 bord hover:bg-green-900'>
+    <button ref={scrollRef} className=' mt-8 mx-96 px-4 py-1 border font-semibold rounded-full text-sm bg-green-500 bord hover:bg-green-900'>
      <a href=' '> <Link to={'/'}>Home</Link></a> </button>
-    </div></div>
+    </div ></div>
   )
 }
 
