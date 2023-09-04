@@ -109,7 +109,7 @@ const Addpage = () => {
                   {data.label}
               </label>
               <span style={{ color: "red" }}>{invalidData[data.name] ? invalidData[data.name] : ""}</span>
-              {index===3?
+              {data.name==='isPersonal'?
               <select 
               className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
               name={data.name}
