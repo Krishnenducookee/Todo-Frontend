@@ -85,9 +85,11 @@ const Addpage = () => {
   const inputFields = [{label:"Task",name:"taskName",type:"text",
                            placeholder:"Name of Task", seconddiv:"md:w-1/2 md:mb-0"},
                       {label:"Due Date",name:"dueDate",type:"date",
-                              placeholder:"Due Date of Task", seconddiv:"md:w-1/2"},
+                              placeholder:"", seconddiv:"md:w-1/2"},
                       {label:"Decription",name:"taskDescription",
                                placeholder:"Decription of Task",seconddiv:""},
+                     {label:"Workspace",name:"isPersonal",
+                               placeholder:"",seconddiv:""},
               ];
 
   return (
@@ -99,7 +101,7 @@ const Addpage = () => {
         <form className="w-full max-w-lg" onSubmit={saveData}>
         
           
-          <div className="flex flex-wrap -mx-3 mb-6 ">
+          <div className="flex flex-wrap -mx-3 mb-6 " >
           {inputFields.map((data,index)=>(
             <div className={`w-full px-3 ${data.seconddiv}`}>                
               <label
@@ -107,8 +109,16 @@ const Addpage = () => {
                   {data.label}
               </label>
               <span style={{ color: "red" }}>{invalidData[data.name] ? invalidData[data.name] : ""}</span>
-              
-              <input
+              {index===3?
+              <select 
+              className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
+              name={data.name}
+              onChange={collectData}>
+                <option defaultChecked> Select Task's Workspace</option>
+                  <option value="Personal" >Personal</option>
+                  <option value="Official">Official</option>
+                </select>
+                :<input
                 className="appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900"
                 autoFocus={index===0?true:false}
                 type={data.type}
@@ -116,26 +126,12 @@ const Addpage = () => {
                 value={inputData[data.name]}
                 onChange={collectData}
                 placeholder={data.placeholder}
-              />
+              />}  
             </div>
             ))}
           </div>
            <div className="flex flex-wrap -mx-3 mb-2">
             <div className="w-full px-3">
-              <label className="block uppercase tracking-wide text-black text-xs font-bold mb-2"
-                htmlFor="grid-state"> Workspace
-              </label>
-              <div className="relative">
-                <span style={{ color: "red" }}>{invalidData.isPersonal ? invalidData.isPersonal : ""}</span>
-                <select
-                  className="block appearance-none w-full border border-green-500 text-black py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-green-900"
-                  name='isPersonal'
-                  onChange={collectData}>
-                  <option defaultChecked> Select Task's Workspace</option>
-                  <option value="Personal" >Personal</option>
-                  <option value="Official">Official</option>
-                </select>
-              </div>
             </div></div>
           <div className="flex flex-wrap -mx-3 mb-2">
             <div className="px-3 md:w-1/2 ">
