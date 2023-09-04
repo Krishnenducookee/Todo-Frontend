@@ -20,16 +20,19 @@ const scrolling=()=>{
    toScroll.current.scrollIntoView()
 
 }
+const scrollingButtonPosition=`${isBottom?`top-0 right-5`:`bottom-0 right-5`}`
+
  const theadarray=["Sl.No","Task","Workspace","Due Date","Description" ,"Issued From",]
 
   return (
-    <div className='bg-green-300 h-screen'>
+    <div className='bg-green-300 h-full min-h-screen' style={{position:'relative'}}>
       <div className="mx-96">
       <center>
         <h1 ref={isBottom?null:toScroll} > History</h1>
       </center>
           <button onClick={()=>{scrolling()}} 
-           className={isBottom?`absolute top-0 right-5`:`absolute bottom-0 right-5`}
+          
+           className={`absolute rounded-full text-sm bg-green-500 bord hover:bg-green-900 ${scrollingButtonPosition}`}
           >
               {isBottom?<b>Bottom</b>:<b>Top</b>} 
       </button> 
