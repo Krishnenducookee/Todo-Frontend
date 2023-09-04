@@ -20,7 +20,7 @@ const Home = () => {
       // axios.post(`http://localhost:2000/router/done/${id}`)
   }
   return (
-    <div className='bg-green-300 h-screen' >
+    <div className='bg-green-300 h-full min-h-screen' >
     <div  className='w-full bg-green-200  h-48'>
     <button className=' mt-11 ml-44 px-4 py-1 border font-semibold rounded-full text-sm bg-green-500 bord hover:bg-green-900'>
          <a href=' '> <Link to={'/viewtask'}>All Upcoming Tasks</Link></a> </button> 
