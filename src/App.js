@@ -3,7 +3,6 @@ import Home from "./Components/Home";
 import Addpage from "./Components/Addpage";
 import ViewAllTasks from "./Components/ViewAllTasks";
 import History from "./Components/History";
-import EditTask from "./Components/EditTask";
 
 function App() {
   return (
@@ -14,7 +13,7 @@ function App() {
           <Route path="/addnew" element={<Addpage />} />
           <Route path="/viewtask" element={<ViewAllTasks />} />
           <Route path="/completedtasks" element={<History />} />
-          <Route path="/editTask/:id" element={<EditTask />} />
+          <Route path="/editTask/:id" element={<Addpage/>} />
         </Routes>
       </BrowserRouter>
     </div>
