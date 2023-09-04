@@ -7,18 +7,32 @@ import { useRef, useState } from "react"
 
 const History = () => {
   const [upcomingTasks, setUpcomingTasks] = useState([])
-  const scrollRef=useRef()
+  const toScroll=useRef(null)
+  const [isBottom,setIsBottom]=useState(true)
    
   useFetch({url:'viewCompletedTask',method:'get',handleResponse:(response)=>{
     setUpcomingTasks(response)
 }})
- 
+
+const scrolling=()=>{
+
+   setIsBottom(!isBottom)
+   toScroll.current.scrollIntoView()
+
+}
  const theadarray=["Sl.No","Task","Workspace","Due Date","Description" ,"Issued From",]
 
   return (
     <div className='bg-green-300 h-screen'>
       <div className="mx-96">
-        <button onClick={()=>{scrollRef.current.scrollIntoView({block:'end'})}}>top</button> 
+      <center>
+        <h1 ref={isBottom?null:toScroll} > History</h1>
+      </center>
+          <button onClick={()=>{scrolling()}} 
+           className={isBottom?`absolute top-0 right-5`:`absolute bottom-0 right-5`}
+          >
+              {isBottom?<b>Bottom</b>:<b>Top</b>} 
+      </button> 
       <table className='border boredr-slate-200 border-separate border-spacing-2'>
     <thead>
       <tr>
@@ -38,8 +52,10 @@ const History = () => {
     ))}
         </tr>)
       })}</tbody></table></div>  <div>
-    <button ref={scrollRef} className=' mt-8 mx-96 px-4 py-1 border font-semibold rounded-full text-sm bg-green-500 bord hover:bg-green-900'>
+        
+    <button ref={isBottom?toScroll:null} className=' mt-8 mx-96 px-4 py-1 border font-semibold rounded-full text-sm bg-green-500 bord hover:bg-green-900'>
      <a href=' '> <Link to={'/'}>Home</Link></a> </button>
+
     </div ></div>
   )
 }
