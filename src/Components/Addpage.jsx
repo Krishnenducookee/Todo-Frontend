@@ -69,16 +69,10 @@ const Addpage = () => {
     setInvalidData(validation(inputData))
     setisSubmit(true)
     if (Object.keys(invalidData).length === 0 && isSubmit) {
-      if(id){
-       MakeApiCall({url:'editTask',method:'post',requestBody:inputData}).then((response)=>{
+       MakeApiCall({url:id?'editTask':'addTask',method:'post',requestBody:inputData}).then((response)=>{
         showtoast(response)
-           })}
-  else{
-      MakeApiCall({url:'addTask',method:'post',requestBody:inputData}).then((response)=>{
-        showtoast(response)
-            } )}}
-  }
-
+       })
+    }}
   const inputFields = [{label:"Task",name:"taskName",type:"text", 
                            placeholder:"Name of Task", elementDiv:"md:w-1/2 md:mb-0"},
                       {label:"Due Date",name:"dueDate",type:"date",
