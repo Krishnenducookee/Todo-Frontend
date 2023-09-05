@@ -7,7 +7,7 @@ import useFetch from '../Hooks/useFetch'
 
 const Addpage = () => {
   const {id}=useParams()
-  const [inputData, setinputData] = useState({ taskName: " ", dueDate: " ", isPersonal: " " })
+  const [inputData, setinputData] = useState({ taskName: " ", dueDate: " ", isPersonal: " ",taskDescription:" " })
   const [invalidData, setInvalidData] = useState({})
   const [isSubmit, setisSubmit] = useState(false)
   const [toast, settoast] = useState({
@@ -20,14 +20,16 @@ const Addpage = () => {
     //   focusTaskName.current.focus();
     // },[])
 
-    const Fetchcall=()=>{useFetch({ url: `editTaskOld/${id}`,
-    method:'get',
+    //  const Fetchcall=()=>{
+
+    useFetch({ url: `editTaskOld/${id}`,
+    method:'get',editTaskId:id,
     handleResponse:(response)=>{
      setinputData(response)
-     
-  }  })}
-  
- if(id){Fetchcall()}
+  }  })
+
+//  }
+//    if(id){Fetchcall()}
 
       function showtoast(response){
         if(response){
@@ -45,13 +47,6 @@ const Addpage = () => {
       }
     
   const navigate = useNavigate()
-
-  const collectData = (e) => {
-    const { name, value } = e.target
-    setinputData({ ...inputData, [name]: value })
-
-
-  }
 
   const validation = (values) => {
     let error = {}
@@ -82,15 +77,15 @@ const Addpage = () => {
             } )}}
   }
 
-  const inputFields = [{label:"Task",name:"taskName",type:"text",
-                           placeholder:"Name of Task", seconddiv:"md:w-1/2 md:mb-0"},
+  const inputFields = [{label:"Task",name:"taskName",type:"text", 
+                           placeholder:"Name of Task", elementDiv:"md:w-1/2 md:mb-0"},
                       {label:"Due Date",name:"dueDate",type:"date",
-                              placeholder:"", seconddiv:"md:w-1/2"},
+                              placeholder:"", elementDiv:"md:w-1/2"},
                       {label:"Decription",name:"taskDescription",
-                               placeholder:"Decription of Task",seconddiv:""},
+                               placeholder:"Decription of Task",elementDiv:"",type:"textarea"},
                      {label:"Workspace",name:"isPersonal",
-                               placeholder:"",seconddiv:""},
-              ];
+                               placeholder:"",elementDiv:"",type:"select"},
+                      ];
 
   return (
     <div className='bg-green-300 h-screen'>
@@ -103,28 +98,32 @@ const Addpage = () => {
           
           <div className="flex flex-wrap -mx-3 mb-6 " >
           {inputFields.map((data,index)=>(
-            <div className={`w-full px-3 ${data.seconddiv}`}>                
+            <div className={`w-full px-3 ${data.elementDiv}`}>                
               <label
                 className="block uppercase tracking-wide text-black text-xs font-bold mb-2 mt-8">
                   {data.label}
               </label>
               <span style={{ color: "red" }}>{invalidData[data.name] ? invalidData[data.name] : ""}</span>
-              {data.name==='isPersonal'?
+              {data.type==='select'?
               <select 
               className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
-              name={data.name}
-              onChange={collectData}>
+              onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}>
                 <option defaultChecked> Select Task's Workspace</option>
                   <option value="Personal" >Personal</option>
                   <option value="Official">Official</option>
                 </select>
+                :data.type==='textarea'?
+                <textarea className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
+                value={inputData[data.name]}
+                onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}
+                placeholder={data.placeholder}>
+                </textarea>
                 :<input
                 className="appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900"
-                autoFocus={index===0?true:false}
+                autoFocus={index===0}
                 type={data.type}
-                name={data.name}
                 value={inputData[data.name]}
-                onChange={collectData}
+                onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}
                 placeholder={data.placeholder}
               />}  
             </div>
