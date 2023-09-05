@@ -33,6 +33,8 @@ const Addpage = () => {
 //  }
 //    if(id){Fetchcall()}
 
+    const elementClass='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
+    const labelClass='block uppercase tracking-wide text-black text-xs font-bold mb-2 mt-8'
       function showtoast(response){
         if(response){
           settoast({ isActive: true, toastmessege: response.status===200 })
@@ -102,27 +104,27 @@ const Addpage = () => {
           {inputFields.map((data,index)=>(
             <div className={`w-full px-3 ${data.elementDiv}`}>                
               <label
-                className="block uppercase tracking-wide text-black text-xs font-bold mb-2 mt-8">
+                className={labelClass}>
                   {data.label}
               </label>
               <span style={{ color: "red" }}>{invalidData[data.name] ? invalidData[data.name] : ""}</span>
               {data.type==='select'?
               <select 
-              className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
+              className={elementClass}
               value={inputData.isPersonal}
-                onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}>
+              onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}>
                 {dropDownMenu.map((menuitem,index)=>(
                 <option defaultChecked={index===0}> {menuitem}</option>
                  ))}
                 </select>
                 :data.type==='textarea'?
-                <textarea className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
+                <textarea className={elementClass}
                 value={inputData[data.name]}
                 onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}
                 placeholder={data.placeholder}>
                 </textarea>
                 :<input
-                className="appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900"
+                className={elementClass}
                 autoFocus={index===0}
                 type={data.type}
                 value={inputData[data.name]}
