@@ -9,7 +9,6 @@ const Addpage = () => {
   const {id}=useParams()
   const [inputData, setinputData] = useState({ taskName: " ", dueDate: " ", isPersonal: " ",taskDescription:" " })
   const [errorMessege, seterrorMessege] = useState({})
-  const [isSubmit, setisSubmit] = useState(false)
   const [toast, settoast] = useState({
     isActive: false
     , toastmessege: false
@@ -50,7 +49,7 @@ const Addpage = () => {
     
   const navigate = useNavigate()
 
-  const validation = (values) => {
+  const validate = (values) => {
     let error = {}
     if (values.taskName === " ") {
       error.taskName = "Enter Task Title"
@@ -68,9 +67,8 @@ const Addpage = () => {
   }
   const saveData = async (e) => {
     e.preventDefault();
-    const errorExist=validation(inputData);
-    setisSubmit(true)
-    if (!errorExist && isSubmit) {
+    const errorExist=validate(inputData);
+    if (!errorExist) {
        MakeApiCall({url:id?'editTask':'addTask',method:'post',requestBody:inputData}).then((response)=>{
         showtoast(response)
        })}}
