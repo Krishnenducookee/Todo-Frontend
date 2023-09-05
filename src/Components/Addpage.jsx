@@ -1,4 +1,4 @@
-import {useEffect, useState } from 'react'
+import {useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Toast from './Toast'
 import { MakeApiCall } from '../Hooks/MakeApiCall'
@@ -13,6 +13,23 @@ const Addpage = () => {
     isActive: false
     , toastmessege: false
   })
+
+  const validate = useMemo(() => {
+    let error = {}
+    if (inputData.taskName ===" " || inputData.taskName.charAt(0)==='A') {
+      error.taskName = "Enter Task Title"
+    }
+       
+    if (inputData.dueDate === " ") {
+      error.dueDate = "Enter Valid Due Date for Your Task"
+    }
+    if (inputData.isPersonal === " ") {
+      error.isPersonal = "Select Task Workspace"
+    }
+    seterrorMessege(error)
+    return errorMessege.lenth>0?true:false
+   
+  },[inputData])
   // const [skipFlag,setSkipFlag]=useState(false)
     // const focusTaskName=useRef(null)
 
@@ -49,25 +66,10 @@ const Addpage = () => {
     
   const navigate = useNavigate()
 
-  const validate = (values) => {
-    let error = {}
-    if (values.taskName === " ") {
-      error.taskName = "Enter Task Title"
-    }
-
-    if (values.dueDate === " ") {
-      error.dueDate = "Enter Valid Due Date for Your Task"
-    }
-    if (values.isPersonal === " ") {
-      error.isPersonal = "Select Task Workspace"
-    }
-    seterrorMessege(error)
-    return errorMessege.lenth>0?true:false
-   
-  }
+  
   const saveData = async (e) => {
     e.preventDefault();
-    const errorExist=validate(inputData);
+    const errorExist=validate;
     if (!errorExist) {
        MakeApiCall({url:id?'editTask':'addTask',method:'post',requestBody:inputData}).then((response)=>{
         showtoast(response)
