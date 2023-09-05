@@ -109,7 +109,8 @@ const Addpage = () => {
               {data.type==='select'?
               <select 
               className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
-              onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}>
+              value={inputData.isPersonal}
+                onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}>
                 {dropDownMenu.map((menuitem,index)=>(
                 <option defaultChecked={index===0}> {menuitem}</option>
                  ))}
