@@ -22,6 +22,8 @@ const Addpage = () => {
 
     //  const Fetchcall=()=>{
 
+    const dropDownMenu=["Select Task's Workspace","Personal","Official"]
+
     useFetch({ url: `editTaskOld/${id}`,
     method:'get',editTaskId:id,
     handleResponse:(response)=>{
@@ -80,11 +82,11 @@ const Addpage = () => {
   const inputFields = [{label:"Task",name:"taskName",type:"text", 
                            placeholder:"Name of Task", elementDiv:"md:w-1/2 md:mb-0"},
                       {label:"Due Date",name:"dueDate",type:"date",
-                              placeholder:"", elementDiv:"md:w-1/2"},
+                              placeholder:"Date the Task to be completed", elementDiv:"md:w-1/2"},
                       {label:"Decription",name:"taskDescription",
                                placeholder:"Decription of Task",elementDiv:"",type:"textarea"},
                      {label:"Workspace",name:"isPersonal",
-                               placeholder:"",elementDiv:"",type:"select"},
+                               placeholder:"Workspace of Task",elementDiv:"",type:"select"},
                       ];
 
   return (
@@ -108,9 +110,9 @@ const Addpage = () => {
               <select 
               className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
               onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}>
-                <option defaultChecked> Select Task's Workspace</option>
-                  <option value="Personal" >Personal</option>
-                  <option value="Official">Official</option>
+                {dropDownMenu.map((menuitem,index)=>(
+                <option defaultChecked={index===0}> {menuitem}</option>
+                 ))}
                 </select>
                 :data.type==='textarea'?
                 <textarea className='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
