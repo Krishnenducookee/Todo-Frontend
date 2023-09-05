@@ -8,7 +8,7 @@ import useFetch from '../Hooks/useFetch'
 const Addpage = () => {
   const {id}=useParams()
   const [inputData, setinputData] = useState({ taskName: " ", dueDate: " ", isPersonal: " ",taskDescription:" " })
-  const [invalidData, setInvalidData] = useState({})
+  const [errorMessege, seterrorMessege] = useState({})
   const [isSubmit, setisSubmit] = useState(false)
   const [toast, settoast] = useState({
     isActive: false
@@ -62,17 +62,18 @@ const Addpage = () => {
     if (values.isPersonal === " ") {
       error.isPersonal = "Select Task Workspace"
     }
-    return error;
+    seterrorMessege(error)
+    return errorMessege.lenth>0?true:false
+   
   }
   const saveData = async (e) => {
     e.preventDefault();
-    setInvalidData(validation(inputData))
+    const errorExist=validation(inputData);
     setisSubmit(true)
-    if (Object.keys(invalidData).length === 0 && isSubmit) {
+    if (!errorExist && isSubmit) {
        MakeApiCall({url:id?'editTask':'addTask',method:'post',requestBody:inputData}).then((response)=>{
         showtoast(response)
-       })
-    }}
+       })}}
   const inputFields = [{label:"Task",name:"taskName",type:"text", 
                            placeholder:"Name of Task", elementDiv:"md:w-1/2 md:mb-0"},
                       {label:"Due Date",name:"dueDate",type:"date",
@@ -99,7 +100,7 @@ const Addpage = () => {
                 className={labelClass}>
                   {data.label}
               </label>
-              <span style={{ color: "red" }}>{invalidData[data.name] ? invalidData[data.name] : ""}</span>
+              <span style={{ color: "red" }}>{errorMessege[data.name] ? errorMessege[data.name] : ""}</span>
               {data.type==='select'?
               <select 
               className={elementClass}
