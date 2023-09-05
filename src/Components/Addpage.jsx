@@ -1,4 +1,4 @@
-import {useState } from 'react'
+import {useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Toast from './Toast'
 import { MakeApiCall } from '../Hooks/MakeApiCall'
@@ -14,24 +14,22 @@ const Addpage = () => {
     isActive: false
     , toastmessege: false
   })
+  // const [skipFlag,setSkipFlag]=useState(false)
     // const focusTaskName=useRef(null)
 
     // useEffect(()=>{
     //   focusTaskName.current.focus();
     // },[])
 
-    //  const Fetchcall=()=>{
-
     const dropDownMenu=["Select Task's Workspace","Personal","Official"]
 
+
     useFetch({ url: `editTaskOld/${id}`,
-    method:'get',editTaskId:id,
+    method:'get',skipFlag:(id?false:true),
     handleResponse:(response)=>{
      setinputData(response)
   }  })
-
-//  }
-//    if(id){Fetchcall()}
+  
 
     const elementClass='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
     const labelClass='block uppercase tracking-wide text-black text-xs font-bold mb-2 mt-8'
