@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Toast from './Toast'
 import { MakeApiCall } from '../Hooks/MakeApiCall'
@@ -7,29 +7,56 @@ import useFetch from '../Hooks/useFetch'
 
 const Addpage = () => {
   const {id}=useParams()
-  const [inputData, setinputData] = useState({ taskName: " ", dueDate: " ", isPersonal: " ",taskDescription:" " })
-  const [errorMessege, seterrorMessege] = useState({})
-  const [toast, settoast] = useState({
+  const [inputData, setInputData] = useState({ taskName: " ", dueDate: " ", isPersonal: " ",taskDescription:" " })
+  const [errorMessage, setErrorMessage] = useState({})
+  const [toast, setToast] = useState({
     isActive: false
-    , toastmessege: false
+    , toastMessage: false
   })
 
-  const validate = useMemo(() => {
-    let error = {}
-    if (inputData.taskName ===" ") {
-      error.taskName = "Enter Task Title"
-    }
+  const dropDownMenu=["Select Workspace of Task","Personal","Official"]
+
+  
+
+  const isValidationSuccess = useMemo(() => {
+    
+    const error = {}
+
     const today=new Date()
-    if (inputData.dueDate === " " || today< inputData.dueDate) {
+    if (today< inputData.dueDate) {
       error.dueDate = "Enter Valid Due Date for Your Task"
     }
-    if (inputData.isPersonal === " "|| inputData.isPersonal==='Select Workspace of Task') {
+
+    if (inputData.isPersonal==='Select Workspace of Task') {
       error.isPersonal = "Select Task Workspace"
     }
-    seterrorMessege(error)
-    return errorMessege.length>0?true:false
-   
-  },[inputData])
+
+      setErrorMessage(error)
+      return ["dueDate","isPersonal"].every((eachkey)=>{
+        return !!error[eachkey]
+      })
+                  
+    },[inputData])
+
+    
+    const checkIsInputEmpty=(inputData)=>{
+      const error={}
+
+        if (inputData.taskName ===" ") {
+          error.taskName = "Enter Task Title"
+        }
+        if (inputData.dueDate === " ") {
+          error.dueDate = "Enter Valid Due Date for Your Task"
+        }
+        if (inputData.isPersonal === " ") {
+          error.isPersonal = "Select Task Workspace"
+        }
+          setErrorMessage(error)  
+           return ["taskName","dueDate","isPersonal"].every((eachkey)=>{
+            return !!error[eachkey]
+           })
+      }
+
   // const [skipFlag,setSkipFlag]=useState(false)
     // const focusTaskName=useRef(null)
 
@@ -37,27 +64,25 @@ const Addpage = () => {
     //   focusTaskName.current.focus();
     // },[])
 
-    const dropDownMenu=["Select Workspace of Task","Personal","Official"]
-
-
     useFetch({ url: `editTaskOld/${id}`,
-    method:'get',skipFlag:(id?false:true),
+    method:'get',skipFlag:!id,
     handleResponse:(response)=>{
-     setinputData(response)
+     setInputData(response)
   }  })
   
 
     const elementClass='appearance-none block w-full mb-3 text-black border border-green-500  rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-900'
     const labelClass='block uppercase tracking-wide text-black text-xs font-bold mb-2 mt-8'
-      function showtoast(response){
+      
+    function showtoast(response){
         if(response){
-          settoast({ isActive: true, toastmessege: response.status===200 })
+          setToast({ isActive: true, toastMessage: response.status===200 })
         setTimeout(() => {
           navigate('/viewtask')
         }, 2000);
         }
        else{ 
-        settoast({ isActive: true, toastmessege:false })
+        setToast({ isActive: true, toastMessage:false })
         setTimeout(() => {
           navigate('/')
         }, 2000);
@@ -69,8 +94,10 @@ const Addpage = () => {
   
   const saveData = async (e) => {
     e.preventDefault();
-    const errorExist=validate;
-    if (!errorExist) {
+   const isInputempty=checkIsInputEmpty(inputData);
+   console.log(isInputempty);
+   console.log(isValidationSuccess);
+    if (!isValidationSuccess && !isInputempty) {
        MakeApiCall({url:id?'editTask':'addTask',method:'post',requestBody:inputData}).then((response)=>{
         showtoast(response)
        })}}
@@ -87,7 +114,7 @@ const Addpage = () => {
   return (
     <div className='bg-green-300 h-screen'>
 
-      {toast.isActive ? <Toast toast={toast.toastmessege} /> : null}
+      {toast.isActive ? <Toast toast={toast.toastMessage} /> : null}
       <div className='pt-16 pl-96'>
 
         <form className="w-full max-w-lg" onSubmit={saveData}>
@@ -100,12 +127,12 @@ const Addpage = () => {
                 className={labelClass}>
                   {data.label}
               </label>
-              <span style={{ color: "red" }}>{errorMessege[data.name] ? errorMessege[data.name] : ""}</span>
+              <span style={{ color: "red" }}>{errorMessage[data.name] ? errorMessage[data.name] : ""}</span>
               {data.type==='select'?
               <select 
               className={elementClass}
               value={inputData.isPersonal}
-              onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}>
+              onChange={(e)=>{setInputData({...inputData,[data.name]:e.target.value})}}>
                 {dropDownMenu.map((menuitem,index)=>(
                 <option defaultChecked={index===0}> {menuitem}</option>
                  ))}
@@ -113,7 +140,7 @@ const Addpage = () => {
                 :data.type==='textarea'?
                 <textarea className={elementClass}
                 value={inputData[data.name]}
-                onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}
+                onChange={(e)=>{setInputData({...inputData,[data.name]:e.target.value})}}
                 placeholder={data.placeholder}>
                 </textarea>
                 :<input
@@ -121,7 +148,7 @@ const Addpage = () => {
                 autoFocus={index===0}
                 type={data.type}
                 value={inputData[data.name]}
-                onChange={(e)=>{setinputData({...inputData,[data.name]:e.target.value})}}
+                onChange={(e)=>{setInputData({...inputData,[data.name]:e.target.value})}}
                 placeholder={data.placeholder}
               />}  
             </div>
@@ -137,7 +164,7 @@ const Addpage = () => {
               </div>
             <div className="w-full px-3"> 
         <button className=' mt-8 ml-42  px-4 py-1 border rounded-full text-sm bg-green-500 hover:bg-green-800'>
-          <a href=' '> <Link to={'/'}>Home</Link></a> </button>
+           <Link to={'/'}>Home</Link> </button>
            </div>
          </div>
         </form>
