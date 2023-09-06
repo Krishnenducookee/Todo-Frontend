@@ -27,7 +27,7 @@ const Addpage = () => {
       error.isPersonal = "Select Task Workspace"
     }
     seterrorMessege(error)
-    return errorMessege.lenth>0?true:false
+    return errorMessege.length>0?true:false
    
   },[inputData])
   // const [skipFlag,setSkipFlag]=useState(false)
