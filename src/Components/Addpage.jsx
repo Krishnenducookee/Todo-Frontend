@@ -16,14 +16,14 @@ const Addpage = () => {
 
   const validate = useMemo(() => {
     let error = {}
-    if (inputData.taskName ===" " || inputData.taskName.charAt(0)==='A') {
+    if (inputData.taskName ===" ") {
       error.taskName = "Enter Task Title"
     }
-       
-    if (inputData.dueDate === " ") {
+    const today=new Date()
+    if (inputData.dueDate === " " || today< inputData.dueDate) {
       error.dueDate = "Enter Valid Due Date for Your Task"
     }
-    if (inputData.isPersonal === " ") {
+    if (inputData.isPersonal === " "|| inputData.isPersonal==='Select Workspace of Task') {
       error.isPersonal = "Select Task Workspace"
     }
     seterrorMessege(error)
@@ -37,7 +37,7 @@ const Addpage = () => {
     //   focusTaskName.current.focus();
     // },[])
 
-    const dropDownMenu=["Select Task's Workspace","Personal","Official"]
+    const dropDownMenu=["Select Workspace of Task","Personal","Official"]
 
 
     useFetch({ url: `editTaskOld/${id}`,
