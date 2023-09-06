@@ -35,6 +35,8 @@ const Addpage = () => {
       return ["dueDate","isPersonal"].every((eachkey)=>{
         return !!error[eachkey]
       })
+
+      // return Object.keys(error).length===0
                   
     },[inputData])
 
@@ -55,6 +57,8 @@ const Addpage = () => {
            return ["taskName","dueDate","isPersonal"].every((eachkey)=>{
             return !!error[eachkey]
            })
+      // return Object.keys(error).length===0
+
       }
 
   // const [skipFlag,setSkipFlag]=useState(false)
@@ -95,8 +99,6 @@ const Addpage = () => {
   const saveData = async (e) => {
     e.preventDefault();
    const isInputempty=checkIsInputEmpty(inputData);
-   console.log(isInputempty);
-   console.log(isValidationSuccess);
     if (!isValidationSuccess && !isInputempty) {
        MakeApiCall({url:id?'editTask':'addTask',method:'post',requestBody:inputData}).then((response)=>{
         showtoast(response)
