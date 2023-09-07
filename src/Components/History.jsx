@@ -48,7 +48,7 @@ const scrollingButtonPosition=`${isBottom?`top-0 right-5`:`bottom-0 right-5`}`
     </thead>
     <tbody>
       {upcomingTasks?.map((data,index)=>{
-      const mapdata=[index+1,data.taskName,data.isPersonal,data.dueDate,data.taskDescription,data.createdAt]
+      const mapdata=[index+1,data.taskName,data.workSpace,data.dueDate,data.taskDescription,data.createdAt]
       return (<tr>
         {mapdata.map((data2,index)=>(
     <td className='border border-green-900'>{data2}</td>
