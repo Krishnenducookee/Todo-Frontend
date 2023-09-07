@@ -57,9 +57,8 @@ const Addpage = () => {
       error.workSpace = "Select Task Workspace";
     }
     setErrorMessage(error);
-    console.log(error);
 
-    return  !!(error.dueDate || error.taskName || error.workSpace)
+    return !!(error.dueDate || error.taskName || error.workSpace);
   };
   // const [skipFlag,setSkipFlag]=useState(false)
   // const focusTaskName=useRef(null)
@@ -83,17 +82,10 @@ const Addpage = () => {
     "block uppercase tracking-wide text-black text-xs font-bold mb-2 mt-8";
 
   function showtoast(response) {
-    if (response) {
-      setToast({ isActive: true, toastMessage: response.status === 200 });
-      setTimeout(() => {
-        navigate("/viewtask");
-      }, 2000);
-    } else {
-      setToast({ isActive: true, toastMessage: false });
+      setToast({ isActive: true, toastMessage:response?response.status === 200:false });
       setTimeout(() => {
         navigate("/");
       }, 2000);
-    }
   }
 
   const navigate = useNavigate();
@@ -178,7 +170,10 @@ const Addpage = () => {
                     className={elementClass}
                     value={inputData[data.name]}
                     onChange={(e) => {
-                      setInputData( { ...inputData, [data.name]: e.target.value })
+                      setInputData({
+                        ...inputData,
+                        [data.name]: e.target.value,
+                      });
                     }}
                     placeholder={data.placeholder}
                   ></textarea>
