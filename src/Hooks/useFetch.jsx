@@ -11,8 +11,10 @@ const useFetch=(
     useEffect(()=>{      
       if(!skipFlag){
            MakeApiCall({url,method}).then((response)=>{
-                   setFetchedData(response.data.data)
-                   handleResponse(response.data.data)     
+                   setFetchedData((pre)=>{
+                        handleResponse(pre)   
+                        return response.data.data})
+                     
             }) 
      
       }
